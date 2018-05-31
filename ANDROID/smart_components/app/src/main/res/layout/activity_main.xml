@@ -73,39 +73,42 @@
         android:layout_below="@+id/sendMSJ"
         android:text="Enviar msj" />
 
-    <ImageButton
+    <Button
         android:id="@+id/recorder"
-        android:layout_width="34dp"
+        android:layout_width="wrap_content"
         android:layout_height="37dp"
         android:layout_alignParentTop="true"
         android:layout_alignStart="@+id/camara"
         android:layout_marginTop="135dp"
-        android:src="@drawable/ic_if_034_microphone_183596" />
+        android:text="Grabar"
+        android:drawableRight="@drawable/ic_if_034_microphone_183596" />
 
-    <ImageButton
+    <Button
         android:id="@+id/stoprecorder"
-        android:layout_width="34dp"
+        android:layout_width="wrap_content"
         android:layout_height="37dp"
-        android:layout_alignTop="@+id/recorder"
-        android:layout_toEndOf="@+id/camara"
-        app:srcCompat="@drawable/ic_if_microphone_slash_1608549" />
-
-    <ImageButton
-        android:id="@+id/idplay"
-        android:layout_width="37dp"
-        android:layout_height="36dp"
         android:layout_alignParentTop="true"
         android:layout_alignStart="@+id/camara"
-        android:layout_marginTop="187dp"
-        android:src="@drawable/ic_if_play_circle_outline_326584"
-        />
+        android:layout_marginTop="180dp"
+        android:text="Parar"
+        android:drawableRight="@drawable/ic_if_microphone_slash_1608549" />
 
-    <ImageButton
-        android:id="@+id/idStop"
-        android:layout_width="40dp"
+    <Button
+        android:id="@+id/idplay"
+        android:layout_width="wrap_content"
         android:layout_height="36dp"
-        android:layout_alignTop="@+id/idplay"
-        android:layout_toEndOf="@+id/camara"
-        android:src="@drawable/ic_if_24_stop_106221" />
+        android:layout_alignStart="@+id/camara"
+        android:layout_below="@+id/stoprecorder"
+        android:drawableRight="@drawable/ic_if_play_circle_outline_326584"
+        android:text="Reproducir" />
+
+    <Button
+        android:id="@+id/idStop"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:layout_alignStart="@+id/camara"
+        android:layout_below="@+id/idplay"
+        android:drawableRight="@drawable/ic_if_24_stop_106221"
+        android:text="Parar" />
 
 </RelativeLayout>

@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     TextView latitud,longitud,num;
     Double lat,lng;
     Button send;
-    ImageButton play, stop,recorder,stopRecorder;
+    Button play, stop,recorder,stopRecorder;
     String pathSave ="";
     MediaRecorder mediaRecorder;
     MediaPlayer mediaPlayer;
@@ -264,6 +264,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        stopRecorder.setEnabled(true);
         play.setEnabled(false);
         stop.setEnabled(false);
 
