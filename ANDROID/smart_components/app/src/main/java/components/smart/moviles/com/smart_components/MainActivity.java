@@ -9,11 +9,18 @@ import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.media.MediaPlayer;
+import android.media.MediaRecorder;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -21,16 +28,26 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
+import java.util.UUID;
+
 public class MainActivity extends AppCompatActivity {
     ImageButton camara;
     ImageView preview;
     TextView latitud,longitud,num;
     Double lat,lng;
     Button send;
+    ImageButton play, stop,recorder,stopRecorder;
+    String pathSave ="";
+    MediaRecorder mediaRecorder;
+    MediaPlayer mediaPlayer;
+    final int REQUEST_PERMISSION_CODE = 1000;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         init();
         initGPS();
     }
@@ -58,7 +75,46 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         send.setVisibility(View.INVISIBLE);
+        if(!checkPermissionFromDevice())
+            requestPermission();
+        play = super.findViewById(R.id.idplay);
+        stop = super.findViewById(R.id.idStop);
+        recorder = super.findViewById(R.id.recorder);
+        stopRecorder = super.findViewById(R.id.stoprecorder);
+
+
+            recorder.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(checkPermissionFromDevice()){
+                        grabar();
+                    }else{
+                        requestPermission();
+                    }
+                }
+            });
+            stopRecorder.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    pararDeGrabar();
+                }
+            });
+            play.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    reproducir();
+                }
+            });
+            stop.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    pararDeReproducir();
+                }
+            });
+
+
     }
+
     /////**********PARA EL USO DE LA CAMARA*****************///////
     static final int MEDIA_TYPE_IMAGE = 1;
     void toCamara(){
@@ -169,4 +225,100 @@ public class MainActivity extends AppCompatActivity {
     public void mensaje(String msg){
         Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
     }
+    //  GRABACIÓN DE AUDIOS
+    private boolean checkPermissionFromDevice() {
+        int write_external_storage_result = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int record_audio_resut = ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO);
+        return write_external_storage_result == PackageManager.PERMISSION_GRANTED &&
+                record_audio_resut == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void requestPermission() {
+        ActivityCompat.requestPermissions(this, new String[]{
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.RECORD_AUDIO
+        },REQUEST_PERMISSION_CODE);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode){
+            case REQUEST_PERMISSION_CODE:{
+                if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                    Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show();
+
+            }
+            break;
+        }
+    }
+
+    private void grabar() {
+        pathSave = Environment.getExternalStorageDirectory().getAbsolutePath()+"/"
+                + UUID.randomUUID().toString()+"_audio_record.3gp";
+        setupMediaRecorder();
+        try {
+            mediaRecorder.prepare();
+            mediaRecorder.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        play.setEnabled(false);
+        stop.setEnabled(false);
+
+        Toast.makeText(MainActivity.this, "Grabando...", Toast.LENGTH_SHORT).show();
+    }
+
+    private void pararDeGrabar() {
+        mediaRecorder.stop();
+        stopRecorder.setEnabled(false);
+        play.setEnabled(true);
+        recorder.setEnabled(true);
+        stop.setEnabled(false);
+
+        Toast.makeText(MainActivity.this, "Se detuvo la grabación...", Toast.LENGTH_SHORT).show();
+    }
+
+    private void reproducir() {
+        stop.setEnabled(true);
+        stopRecorder.setEnabled(false);
+        recorder.setEnabled(false);
+
+        mediaPlayer = new MediaPlayer();
+        try {
+            mediaPlayer.setDataSource(pathSave);
+            mediaPlayer.prepare();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        mediaPlayer.start();
+        Toast.makeText(MainActivity.this, "Reproduciendo...", Toast.LENGTH_SHORT).show();
+
+    }
+
+    private void pararDeReproducir() {
+        stopRecorder.setEnabled(false);
+        recorder.setEnabled(true);
+        stop.setEnabled(false);
+        play.setEnabled(true);
+
+        if(mediaPlayer != null){
+            mediaPlayer.stop();
+            mediaPlayer.release();
+            setupMediaRecorder();
+        }
+
+        Toast.makeText(MainActivity.this, "Se detuvo la reproducción...", Toast.LENGTH_SHORT).show();
+    }
+
+    private void setupMediaRecorder() {
+        mediaRecorder = new MediaRecorder();
+        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        mediaRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
+        mediaRecorder.setOutputFile(pathSave);
+    }
+
+
 }
