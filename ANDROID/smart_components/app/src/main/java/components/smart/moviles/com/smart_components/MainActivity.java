@@ -37,11 +37,12 @@ public class MainActivity extends AppCompatActivity {
     TextView latitud,longitud,num;
     Double lat,lng;
     Button send;
-    Button play, stop,recorder,stopRecorder;
+    Button play, stop,recorder,stopRecorder, toActivityVideo;
     String pathSave ="";
     MediaRecorder mediaRecorder;
     MediaPlayer mediaPlayer;
     final int REQUEST_PERMISSION_CODE = 1000;
+    static final int request_Code = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,8 +82,7 @@ public class MainActivity extends AppCompatActivity {
         stop = super.findViewById(R.id.idStop);
         recorder = super.findViewById(R.id.recorder);
         stopRecorder = super.findViewById(R.id.stoprecorder);
-
-
+        toActivityVideo = super.findViewById(R.id.toSecondActivity);
             recorder.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -112,7 +112,13 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
-
+            toActivityVideo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(MainActivity.this, SecondActivity.class);
+                    startActivityForResult(intent,request_Code);
+                }
+            });
     }
 
     /////**********PARA EL USO DE LA CAMARA*****************///////

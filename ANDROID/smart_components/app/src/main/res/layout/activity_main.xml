@@ -111,4 +111,13 @@
         android:drawableRight="@drawable/ic_if_24_stop_106221"
         android:text="Parar" />
 
+    <Button
+        android:id="@+id/toSecondActivity"
+        android:layout_width="105dp"
+        android:layout_height="33dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/camara"
+        android:layout_marginBottom="177dp"
+        android:text="ActivityVideos" />
+
 </RelativeLayout>
