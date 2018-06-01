@@ -2,6 +2,7 @@ package components.smart.moviles.com.smart_components;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +16,7 @@ import static components.smart.moviles.com.smart_components.MainActivity.MEDIA_T
 public class SecondActivity extends AppCompatActivity {
     VideoView video;
     Button irACamaraBtn;
+    private int position = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +49,23 @@ public class SecondActivity extends AppCompatActivity {
         if (requestCode == MEDIA_TYPE_VIDEO && resultCode == RESULT_OK) {
             Uri videoUri = data.getData();
             video.setVideoURI(videoUri);
+            video.start();
+            video.setOnPreparedListener(videoViewListener);
+
         }
     }
+
+    private MediaPlayer.OnPreparedListener videoViewListener =
+            new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mediaPlayer) {
+                    /*
+                     * Se indica al reproductor multimedia que el vídeo
+                     * se reproducirá en un loop (on repeat).
+                     */
+                    mediaPlayer.setLooping(true);
+
+
+                }
+            };
 }
