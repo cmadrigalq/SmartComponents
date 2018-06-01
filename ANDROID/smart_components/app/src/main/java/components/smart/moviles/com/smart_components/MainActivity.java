@@ -1,6 +1,7 @@
 package components.smart.moviles.com.smart_components;
 
 import android.Manifest;
+import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,6 +12,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -32,7 +34,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
-    ImageButton camara;
+    ImageButton camara, llamada;
     ImageView preview;
     TextView latitud,longitud,num;
     Double lat,lng;
@@ -43,12 +45,12 @@ public class MainActivity extends AppCompatActivity {
     MediaPlayer mediaPlayer;
     final int REQUEST_PERMISSION_CODE = 1000;
     static final int request_Code = 1;
+    BluetoothAdapter bluetoothAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         init();
         initGPS();
     }
@@ -83,43 +85,58 @@ public class MainActivity extends AppCompatActivity {
         recorder = super.findViewById(R.id.recorder);
         stopRecorder = super.findViewById(R.id.stoprecorder);
         toActivityVideo = super.findViewById(R.id.toSecondActivity);
-            recorder.setOnClickListener(new View.OnClickListener() {
+        recorder.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
-                    if(checkPermissionFromDevice()){
-                        grabar();
-                    }else{
-                        requestPermission();
-                    }
-                }
+                public void onClick(View v) {if( checkPermissionFromDevice()){grabar(); }else{ requestPermission(); }}
             });
-            stopRecorder.setOnClickListener(new View.OnClickListener() {
+        stopRecorder.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     pararDeGrabar();
                 }
             });
-            play.setOnClickListener(new View.OnClickListener() {
+        play.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     reproducir();
                 }
             });
-            stop.setOnClickListener(new View.OnClickListener() {
+        stop.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     pararDeReproducir();
                 }
             });
-
-            toActivityVideo.setOnClickListener(new View.OnClickListener() {
+        toActivityVideo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(MainActivity.this, SecondActivity.class);
                     startActivityForResult(intent,request_Code);
                 }
-            });
+        });
+        llamada = super.findViewById(R.id.idLlamada);
+        if(ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED)
+            requestCallPermision();
+        llamada.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!num.getText().toString().equals("")) {
+                    if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+                        Intent i = new Intent(Intent.ACTION_CALL, Uri.parse("tel:"+num.getText().toString()));
+                        startActivity(i);
+                    }else{
+                        Toast.makeText(MainActivity.this, "No se pudo realizar la llamada...", Toast.LENGTH_SHORT).show();
+                    }
+                }else{
+                    Toast.makeText(MainActivity.this, "Primero digite el número telefónico...", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            }
+        });
+
     }
+
+
 
     /////**********PARA EL USO DE LA CAMARA*****************///////
     static final int MEDIA_TYPE_IMAGE = 1;
@@ -327,5 +344,10 @@ public class MainActivity extends AppCompatActivity {
         mediaRecorder.setOutputFile(pathSave);
     }
 
+    private void requestCallPermision() {
+        ActivityCompat.requestPermissions(this, new String[]{
+                Manifest.permission.CALL_PHONE
+        },REQUEST_PERMISSION_CODE);
+    }
 
 }

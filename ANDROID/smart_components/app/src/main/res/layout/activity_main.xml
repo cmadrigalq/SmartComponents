@@ -62,8 +62,8 @@
         android:id="@+id/sendMSJ2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/preview"
         android:layout_below="@+id/sendMSJ"
-        android:layout_toStartOf="@+id/camara"
         android:text="Enviar BT" />
 
     <Button
@@ -115,9 +115,17 @@
         android:id="@+id/toSecondActivity"
         android:layout_width="105dp"
         android:layout_height="33dp"
-        android:layout_alignParentBottom="true"
         android:layout_alignStart="@+id/camara"
-        android:layout_marginBottom="177dp"
+        android:layout_below="@+id/idStop"
         android:text="ActivityVideos" />
+
+    <ImageButton
+        android:id="@+id/idLlamada"
+        android:layout_width="39dp"
+        android:layout_height="42dp"
+        android:layout_alignStart="@+id/camara"
+        android:layout_below="@+id/sendMSJ"
+        app:srcCompat="@android:drawable/ic_menu_call" />
+
 
 </RelativeLayout>
