@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <ImageButton
+        android:id="@+id/camara"
+        android:layout_width="113dp"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/preview"
+        android:layout_toEndOf="@+id/num"
+        android:background="@android:color/holo_green_light"
+        app:srcCompat="@android:drawable/ic_menu_camera" />
+
+    <ImageView
+        android:id="@+id/preview"
+        android:layout_width="185dp"
+        android:layout_height="260dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="17dp"
+        android:layout_marginTop="73dp"
+        app:srcCompat="@android:color/darker_gray" />
+
+    <TextView
+        android:id="@+id/latitud"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textView"
+        android:layout_marginStart="49dp"
+        android:text="TextView"
+        android:textColor="#000" />
+
+    <TextView
+        android:id="@+id/longitud"
+        android:layout_width="152dp"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/camara"
+        android:layout_alignTop="@+id/latitud"
+        android:text="TextView"
+        android:textColor="#000" />
+
+    <EditText
+        android:id="@+id/num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/preview"
+        android:layout_marginBottom="89dp"
+        android:ems="10"
+        android:hint="Digite un # de celular"
+        android:inputType="phone" />
+
+    <Button
+        android:id="@+id/sendMSJ"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignTop="@+id/sendMSJ3"
+        android:layout_marginStart="29dp"
+        android:background="#acef24"
+        android:text="Enviar por Whatsapp" />
+
+    <Button
+        android:id="@+id/sendMSJ3"
+        android:layout_width="106dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="52dp"
+        android:background="@android:color/holo_purple"
+        android:text="Enviar SMS" />
+
+    <Button
+        android:id="@+id/recorder"
+        android:layout_width="113dp"
+        android:layout_height="37dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/camara"
+        android:layout_marginTop="135dp"
+        android:background="@android:color/holo_orange_dark"
+        android:drawableRight="@drawable/ic_if_034_microphone_183596"
+        android:text="Grabar" />
+
+    <Button
+        android:id="@+id/stoprecorder"
+        android:layout_width="112dp"
+        android:layout_height="37dp"
+        android:layout_alignStart="@+id/camara"
+        android:layout_below="@+id/recorder"
+        android:background="@android:color/holo_red_light"
+        android:drawableRight="@drawable/ic_if_microphone_slash_1608549"
+        android:text="Parar" />
+
+    <Button
+        android:id="@+id/idplay"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/camara"
+        android:layout_marginTop="234dp"
+        android:background="@android:color/holo_blue_light"
+        android:drawableRight="@drawable/ic_if_play_circle_outline_326584"
+        android:text="Reproducir" />
+
+    <Button
+        android:id="@+id/idStop"
+        android:layout_width="107dp"
+        android:layout_height="36dp"
+        android:layout_above="@+id/toSecondActivity"
+        android:layout_alignStart="@+id/camara"
+        android:background="@android:color/holo_red_light"
+        android:drawableRight="@drawable/ic_if_24_stop_106221"
+        android:text="Parar" />
+
+    <Button
+        android:id="@+id/toSecondActivity"
+        android:layout_width="107dp"
+        android:layout_height="37dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/camara"
+        android:layout_marginBottom="170dp"
+        android:background="@android:color/holo_green_light"
+        android:text="Video" />
+
+    <ImageButton
+        android:id="@+id/idLlamada"
+        android:layout_width="39dp"
+        android:layout_height="42dp"
+        android:layout_alignEnd="@+id/longitud"
+        android:layout_alignTop="@+id/num"
+        android:background="@android:color/holo_orange_light"
+        app:srcCompat="@android:drawable/ic_menu_call" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="370dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/preview"
+        android:layout_marginStart="-2dp"
+        android:layout_marginTop="10dp"
+        android:text="Usted se encuentra en las coordenadas: " />
+
+
+</RelativeLayout>
